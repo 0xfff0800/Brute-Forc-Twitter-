@@ -12,7 +12,7 @@ Usage of Brute-Forc-Twitter for attacking targets without prior mutual consent i
 
 ### Usage:
 ```
-git https://github.com/0xfff0800/Brute-Forc-Twitter
+git clone https://github.com/0xfff0800/Brute-Forc-Twitter
 pip3 install mechanize
 cd Brute-Forc-Twitter
 chmod +x Brute-Forc-Twitter.py
